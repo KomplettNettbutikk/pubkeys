@@ -2,6 +2,7 @@
 
 ## Run this in the linux terminal for the user you want to grant access for:
 `curl -s https://raw.githubusercontent.com/KomplettNettbutikk/pubkeys/main/pubkeys >> ~/.ssh/authorized_keys`
+
 Or:
 `wget -qO - https://raw.githubusercontent.com/KomplettNettbutikk/pubkeys/main/pubkeys >> ~/.ssh/authorized_keys`
 

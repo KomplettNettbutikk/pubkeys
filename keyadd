@@ -1,0 +1,39 @@
+#!/bin/bash
+
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin
+
+home_dir=$(cat /etc/passwd | grep ^$(whoami): | cut -d ":" -f 6);
+
+bc_pub_key="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCl1b0AM2gEVkmGiX21cILatTk5XKkrx7SlxWlkHdgMlsYY6t7cPn2Cvia+1sLZx0ToIbLn1/+bV/CfaNili6F/ttLOu3vfIL6KHnuSOtZESaoeDU/PZFqTALo5sh5rjUP5/ewHOxCfBogyv76axJf5MQ8edvtLRCPbJwS+gu8gvrU+EHA7XYotDMg3gfpPJk22z9Fwii6QbL/xobgFrHBumzLyvukXqBgwQw3tYlKmwfTLeIsaLKOa0GgVnCU/qrTR+UD/YkL5tHwsvl2w11+VQAEbxC58AiFTi8PkPclAI7gPkdeLlQGxdyLaUUHCOeF60dZxfqmIyFzDwDKvTZeG1mXu79MqO406PV7QM5zPDdiQ/PJkKcT/ZAAucbXE89UNmxkFBafJ7c6awE66j/IJpnsesKEZ48mY5EY+qausG5X9utjkR/moXZZfLukxjU7tCHNcpHhOurbgcMoaiiySkFPoH1regI83ufq6eoyRj+Wh3IjUQg5IWNH256HghJU=";
+
+ssh_key_dir=$home_dir/.ssh
+ssh_key_file=$home_dir/.ssh/authorized_keys
+
+mkdir -pv $ssh_key_dir
+chmod -v 700 $ssh_key_dir
+
+if cd $ssh_key_dir
+then
+
+if [ -f $ssh_key_file ]
+then
+
+bc_key_count=$( cat $ssh_key_file | grep -w "$bc_pub_key" | wc -l);
+
+if [ $bc_key_count -eq 0 ]
+then
+chmod -v 700 $ssh_key_file;
+echo "ssh-rsa $bc_pub_key" >> $ssh_key_file;
+fi
+
+chmod -v 400 $ssh_key_file;
+
+else
+
+echo -e "\n" >> $ssh_key_file;
+echo -e "\n" >> $ssh_key_file;
+echo "ssh-rsa $bc_pub_key" >> $ssh_key_file;
+chmod -v 400 $ssh_key_file;
+
+fi
+fi
